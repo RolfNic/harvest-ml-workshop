@@ -1,2 +1,2 @@
-torch
-sentence-transformers
+torch>=1.12.1
+sentence-transformers>=2.2.2
