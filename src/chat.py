@@ -8,6 +8,9 @@ sentences = ["This is an example sentence", "Each sentence is converted"]
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 embeddings = model.encode(sentences)
 
+# the bot stores info on your interests, maybe the bot should use it?
+userInfo = {"favNumber": None, "favColor": None}
+
 def encode(text):
     """Procedure die text om zet in tensors."""
     return torch.tensor(model.encode(text))
@@ -39,23 +42,29 @@ class NumberState(State):
     def runState(self):
         try:
             favNumber = int(input("what is your favorite number?\n> "))
-            if favNumber == 6:
-                print("Wow! We're, like, the same person!")
-                return EndState()
-            else:
-                print("Maybe I was wrong about you.")
-                return BadEndState()
         except:
             print("please input an integer")
             return NumberState()
 
+        if favNumber == 6:
+            print("Wow! We're, like, the same person!")
+            return EndState()
+        else:
+            userInfo["favNumber"] = favNumber
+            print("Maybe I was wrong about you.")
+            return BadEndState()
+
 class ColorState(State):
+    color = "red"
     def runState(self):
         favColor = input("what is your favorite color?\n> ")
-        if favColor == "red":
+        if userInfo["favColor"]:
+            self.color = favColor
+        if favColor == self.color:
             print("Wow! I love that color!")
             return NumberState()
         else:
+            userInfo["favColor"] = favColor
             print("I don't think we have a lot in common.")
             return BadEndState()
 
