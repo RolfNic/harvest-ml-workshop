@@ -41,13 +41,17 @@ class BadEndState(State):
 
 class NumberState(State):
     def runState(self):
-        favNumber = int(input("what is your favorite number?\n> "))
-        if favNumber == 6:
-            print("Wow! We're, like, the same person!")
-            return EndState()
-        else:
-            print("Maybe I was wrong about you.")
-            return BadEndState()
+        try:
+            favNumber = int(input("what is your favorite number?\n> "))
+            if favNumber == 6:
+                print("Wow! We're, like, the same person!")
+                return EndState()
+            else:
+                print("Maybe I was wrong about you.")
+                return BadEndState()
+        except:
+            print("please input an integer")
+            return NumberState()
 
 class ColorState(State):
     def runState(self):
