@@ -2,6 +2,12 @@
 , buildPythonPackage
 , fetchPypi
 , torch
+, nltk
+, scipy
+, sentencepiece
+, transformers
+, scikit-learn
+, torchvision
 }:
 
 buildPythonPackage rec {
@@ -10,10 +16,10 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "4f2a4d39e4ea601b9ab42b2db08b5918a9538c168cff1c6895ae26646f3d73b1";
+    sha256 = "sha256-28YBY7J94hB2yaMNJLW3tvoFFB1ozyVT+pp3v3mikTY=";
   };
 
-  propagatedBuildInputs = [ torch ];
+  propagatedBuildInputs = [ torch nltk scipy sentencepiece transformers scikit-learn torchvision ];
 
   # TODO: fix tests
   doCheck = false;
