@@ -3,14 +3,10 @@ import torch.nn as nn
 from sentence_transformers import SentenceTransformer
 from abc import ABC, abstractclassmethod
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
-
 sentences = ["This is an example sentence", "Each sentence is converted"]
 
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2').to(device)
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 embeddings = model.encode(sentences)
-print(embeddings.shape)
 
 def encode(text):
     """Procedure die text om zet in tensors."""
