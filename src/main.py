@@ -93,3 +93,6 @@ def main():
     state = StartState()
     while state:
         state = state.runState()
+
+if __name__ == "__main__":
+    main()
