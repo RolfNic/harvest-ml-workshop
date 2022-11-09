@@ -88,9 +88,10 @@ class AdventureStart(State):
             print("You hit the wall with the chair, it makes a loud bang and some dust falls on the floor.")
             return AdventureStart()
         if bm == 11:
-            print("You hit the hinge with the rock, both the hinge and the rock break.\nThe door of the closet falls off. You can see a key inside,\nyou pick it up.")
-            inventory["hasRock"] = False
-            inventory["hasKey"] = True
+            if inventory["hasRock"]:
+                print("You hit the hinge with the rock, both the hinge and the rock break.\nThe door of the closet falls off. You can see a key inside,\nyou pick it up.")
+                inventory["hasRock"] = False
+                inventory["hasKey"] = True
             return AdventureStart()
         if bm in [12, 13]:
             print("The closet is made of wood. As you try to open it\nyou notice that the hinge on the door is rusted in place.")
