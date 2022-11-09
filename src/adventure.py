@@ -3,17 +3,14 @@ import torch.nn as nn
 from sentence_transformers import SentenceTransformer
 from abc import ABC, abstractclassmethod
 
-sentences = ["This is an example sentence", "Each sentence is converted"]
-
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-embeddings = model.encode(sentences)
+mini_lm = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 # inventory of items for your adventure
 inventory = {"hasKey": False, "hasRock": False}
 
 def encode(text):
     """Procedure die text om zet in tensors."""
-    return torch.tensor(model.encode(text))
+    return torch.tensor(mini_lm.encode(text))
 
 def best_match(options, query):
     """Procedure die meerdere opties vergelijkt met een query,
@@ -49,8 +46,14 @@ class AdventureStart(State):
         ])
 
     def runState(self):
+        if inventory["hasKey"]:
+            print("You have a key in your hand.")
+        if inventory["hasRock"]:
+            print("You have a rock in your hand.")
         response = input("You find yourself in a dimly lit room, what you do?\n> ")
+
         bm = best_match(self.options, encode(response))
+
         if bm == 0:
             print("...you ask yourself")
             return AdventureStart()

@@ -1,19 +1,28 @@
+from ast import Num
 import torch
 import torch.nn as nn
 from sentence_transformers import SentenceTransformer
 from abc import ABC, abstractclassmethod
 
-sentences = ["This is an example sentence", "Each sentence is converted"]
-
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-embeddings = model.encode(sentences)
+from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 # the bot stores info on your interests, maybe the bot should use it?
 userInfo = {"favNumber": None, "favColor": None}
 
+tokenizer = T5Tokenizer.from_pretrained("t5-small")
+t5 = T5ForConditionalGeneration.from_pretrained("t5-small")
+
+def infer_t5(input):
+    input_ids = tokenizer(input, return_tensors="pt").input_ids
+    outputs = t5.generate(input_ids)
+
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+mini_lm = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
 def encode(text):
     """Procedure die text om zet in tensors."""
-    return torch.tensor(model.encode(text))
+    return torch.tensor(mini_lm.encode(text))
 
 def best_match(options, query):
     """Procedure die meerdere opties vergelijkt met een query,
@@ -37,6 +46,28 @@ class EndState(State):
 class BadEndState(State):
     def runState(self):
         print("Bye")
+
+class TranslatorState(State):
+    def runState(self):
+        response = input("Type the text you want to translate to German\n> ")
+        german = infer_t5("translate English to German: " + response)
+        print(german + "\n")
+        return WorkState()
+
+class WorkState(State):
+    options = encode([
+        "I want translate some text",
+        "I want to talk about numbers"
+    ])
+
+    def runState(self):
+        response = input("What would you like to do? I can translate or talk about colors\n> ")
+        bm = best_match(self.options, encode(response))
+
+        if bm == 0:
+            return TranslatorState()
+        if bm == 1:
+            return NumberState()
 
 class NumberState(State):
     def runState(self):
@@ -93,7 +124,7 @@ class StartState(State):
         bm = best_match(self.options, encode(response))
         if bm != None:
             print("Good to hear")
-            return NumColState()
+            return WorkState()
         else:
             print("I'm sorry to hear that.")
             return EndState()
