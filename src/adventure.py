@@ -55,49 +55,49 @@ class AdventureStart(State):
         bm = best_match(self.options, encode(response))
 
         if bm == 0:
-            print("...you ask yourself")
+            print("...you ask yourself\n")
             return AdventureStart()
         if bm == 1:
-            print("Peering through the darkness you see a closet on your left,\na table and chair on your right, a damaged wall behind you,\nand a closed door in front of you.")
+            print("Peering through the darkness you see a closet on your left,\na table and chair on your right, a damaged wall behind you,\nand a closed door in front of you.\n")
             return AdventureStart()
         if bm == 2:
             if inventory["hasKey"]:
-                print("you open the door and go through it.")
-                return None
+                print("you open the door and go through it.\n")
+                return BrownCorridor()
             else:
-                print("you dont have the key")
+                print("you dont have the key\n")
                 return AdventureStart()
         if bm in [3, 4]:
-            print("The door is looks heavy, it is locked, it has a clear keyhole under the handle.")
+            print("The door is looks heavy, it is locked, it has a clear keyhole under the handle.\n")
             return AdventureStart()
         if bm in [5, 6]:
-            print("You move closer to the wall, it appears to have been damaged\nby time. Some rocks look loose but you can't pry them out")
+            print("You move closer to the wall, it appears to have been damaged\nby time. Some rocks look loose but you can't pry them out\n")
             return AdventureStart()
         if bm in [7, 8]:
-            print("The table is covered in a layer of dust, it appears to have stood here untouched for a long time.\nThe chair has a soft cushion, one of its legs appears to be broken and makes a sharp point.")
+            print("The table is covered in a layer of dust, it appears to have stood here untouched for a long time.\nThe chair has a soft cushion, one of its legs appears to be broken and makes a sharp point.\n")
             return AdventureStart()
         if bm == 9:
             if not inventory["hasRock"]:
-                print("You use the broken leg to pry at the rocks.\nA fist sized rock falls on the floor, you pick it up.")
+                print("You use the broken leg to pry at the rocks.\nA fist sized rock falls on the floor, you pick it up.\n")
                 inventory["hasRock"] = True
                 return AdventureStart()
             else:
-                print("Nothing happens")
+                print("Nothing happens\n")
                 return AdventureStart()
         if bm == 10:
-            print("You hit the wall with the chair, it makes a loud bang and some dust falls on the floor.")
+            print("You hit the wall with the chair, it makes a loud bang and some dust falls on the floor.\n")
             return AdventureStart()
         if bm == 11:
             if inventory["hasRock"]:
-                print("You hit the hinge with the rock, both the hinge and the rock break.\nThe door of the closet falls off. You can see a key inside,\nyou pick it up.")
+                print("You hit the hinge with the rock, both the hinge and the rock break.\nThe door of the closet falls off. You can see a key inside,\nyou pick it up.\n")
                 inventory["hasRock"] = False
                 inventory["hasKey"] = True
             return AdventureStart()
         if bm in [12, 13]:
-            print("The closet is made of wood. As you try to open it\nyou notice that the hinge on the door is rusted in place.")
+            print("The closet is made of wood. As you try to open it\nyou notice that the hinge on the door is rusted in place.\n")
             return AdventureStart()
         else:
-            print("Nothing happened.")
+            print("Nothing happened.\n")
             return AdventureStart()
 
 class BrownCorridor(State):
@@ -109,10 +109,10 @@ class BrownCorridor(State):
         response = input("You are in a dimly lit corridor with dark brown walls, what do you do?\n> ")
         bm = best_match(self.options, encode(response))
         if bm == 0:
-            print("In front of you...")
+            print("In front of you...\n")
             return None
         else:
-            print("work in progress")
+            print("work in progress\n")
             return None
 
 
